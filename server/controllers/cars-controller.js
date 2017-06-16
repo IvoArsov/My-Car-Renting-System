@@ -95,5 +95,35 @@ module.exports = {
         res.locals.globalError = message
         res.render('cars/all')
       })
+  },
+  editView: (req, res) => {
+        let carId = req.params.id
+        Car
+            .findById(carId)            
+            .then(car => {                
+                res.render('cars/edit', {car: car})
+            })       
+  },
+  edit: (req, res) => { //Not work
+      let carId = req.params.id
+      let carReq = req.body
+
+      Car
+        .findByIdAndUpdate(carId, {
+            $set: {
+                make: carReq.make,
+                model: carReq.model,
+                year: carReq.year,
+                pricePerDay: carReq.pricePerDay,
+                power: carReq.power,
+                createdOn: carReq.createdOn,
+                image: carReq.image,
+                isRented: carReq.isRented
+            }
+        })
+        .then(() => {
+            res.render('/cars/all')
+        })
+        
   }
 }
